@@ -227,5 +227,8 @@ class MainViewModel @Inject constructor(
         val message = if (customMessage.isEmpty()) errorMsg else "$customMessage: $errorMsg"
         popupNotification.value = Event(message)
     }
+    fun onSave(name: String?,username: String?,bio: String?,imageUrl: String?){
+        this.createOrUpdateProfile(name,username,bio,imageUrl)
+    }
 
 }

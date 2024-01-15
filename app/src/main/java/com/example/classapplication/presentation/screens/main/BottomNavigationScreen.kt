@@ -12,10 +12,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -23,11 +25,11 @@ import com.example.classapplication.R
 import com.example.classapplication.common.Routes
 import com.example.classapplication.presentation.common.navigateTo
 
-enum class BottomNavigationItem(val icon: Int, val navDestination: Routes) {
-    SERVICES(R.drawable.my_logo, Routes.Services),
-    SEARCH(R.drawable.my_logo, Routes.Search),
-    MYSERVICES(R.drawable.my_logo,Routes.MyServices),
-    PROFILE(R.drawable.my_logo,Routes.Profile),
+enum class BottomNavigationItem(val icon: ImageVector, val navDestination: Routes) {
+    SERVICES(Icons.Default.Build, Routes.Services),
+    SEARCH(Icons.Default.Search, Routes.Search),
+    MYSERVICES(Icons.Default.Settings,Routes.MyServices),
+    PROFILE(Icons.Default.Person,Routes.Profile),
 }
 
 
@@ -42,9 +44,7 @@ fun BottomNavigationMenu(selectedItem: BottomNavigationItem, navController: NavC
     ) {
         for (item in BottomNavigationItem.values()) {
             Image(
-                painter = painterResource(id = item.icon),
-                contentDescription = null,
-                modifier = Modifier
+                imageVector = item.icon  , contentDescription = null, modifier = Modifier
                     .size(40.dp)
                     .padding(5.dp)
                     .weight(1f)
@@ -52,8 +52,20 @@ fun BottomNavigationMenu(selectedItem: BottomNavigationItem, navController: NavC
                         navigateTo(navController, item.navDestination)
                     },
                 colorFilter = if (item == selectedItem) ColorFilter.tint(Color.Black)
-                else ColorFilter.tint(Color.Gray)
-            )
+                else ColorFilter.tint(Color.Gray))
+//            Image(
+//                painter = painterResource(id = item.icon),
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .size(40.dp)
+//                    .padding(5.dp)
+//                    .weight(1f)
+//                    .clickable {
+//                        navigateTo(navController, item.navDestination)
+//                    },
+//                colorFilter = if (item == selectedItem) ColorFilter.tint(Color.Black)
+//                else ColorFilter.tint(Color.Gray)
+//            )
         }
     }
 }

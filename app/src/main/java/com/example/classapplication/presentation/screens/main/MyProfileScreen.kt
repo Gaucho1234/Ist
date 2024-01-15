@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.classapplication.common.Routes
 import com.example.classapplication.presentation.MainViewModel
 import com.example.classapplication.presentation.common.CommonImage
 import com.example.classapplication.presentation.common.ProgressSpinner
@@ -48,6 +49,7 @@ fun MyProfileScreen(navController: NavController, vm: MainViewModel) {
         var name by rememberSaveable { mutableStateOf(userData?.name ?: "") }
         var username by rememberSaveable { mutableStateOf(userData?.username ?: "") }
         var bio by rememberSaveable { mutableStateOf(userData?.bio ?: "") }
+        var imageUrl by rememberSaveable { mutableStateOf(userData?.imageUrl ?: "") }
         Log.d("prof", "name: $name, username: $username, bio: $bio")
         ProfileContent(
             vm = vm,
@@ -57,8 +59,8 @@ fun MyProfileScreen(navController: NavController, vm: MainViewModel) {
             onNameChange = { name = it },
             onUsernameChange = { username = it },
             onBioChange = { bio = it },
-            onSave = { },
-            onBack = {  },
+            onSave = { vm.onSave(name,username,bio, imageUrl )},
+            onBack = {  navController.navigate(Routes.Services.route) },
             onLogout = {
 
             }
