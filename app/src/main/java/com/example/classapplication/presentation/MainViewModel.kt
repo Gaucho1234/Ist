@@ -2,14 +2,18 @@ package com.example.classapplication.presentation
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import com.example.classapplication.common.Routes
 import com.example.classapplication.common.USERS
 import com.example.classapplication.data.Event
 import com.example.classapplication.data.UserData
+import com.example.classapplication.presentation.common.navigateTo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.internal.notifyAll
 import javax.inject.Inject
 /**
  * ViewModel class for the main screen of the application.
@@ -230,5 +234,14 @@ class MainViewModel @Inject constructor(
     fun onSave(name: String?,username: String?,bio: String?,imageUrl: String?){
         this.createOrUpdateProfile(name,username,bio,imageUrl)
     }
+    fun logout(){
 
+        if(auth.currentUser !== null){
+           auth.signOut()
+        }else {
+           handleException(exception = Exception(),"Failed to logout")
+        }
+    }
+
+    fun uploadImage(){}
 }

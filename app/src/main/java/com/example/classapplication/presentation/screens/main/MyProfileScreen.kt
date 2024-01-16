@@ -38,6 +38,7 @@ import com.example.classapplication.common.Routes
 import com.example.classapplication.presentation.MainViewModel
 import com.example.classapplication.presentation.common.CommonImage
 import com.example.classapplication.presentation.common.ProgressSpinner
+import com.example.classapplication.presentation.common.navigateTo
 
 @Composable
 fun MyProfileScreen(navController: NavController, vm: MainViewModel) {
@@ -50,7 +51,7 @@ fun MyProfileScreen(navController: NavController, vm: MainViewModel) {
         var username by rememberSaveable { mutableStateOf(userData?.username ?: "") }
         var bio by rememberSaveable { mutableStateOf(userData?.bio ?: "") }
         var imageUrl by rememberSaveable { mutableStateOf(userData?.imageUrl ?: "") }
-        Log.d("prof", "name: $name, username: $username, bio: $bio")
+//        Log.d("prof", "name: $name, username: $username, bio: $bio")
         ProfileContent(
             vm = vm,
             name = name,
@@ -62,7 +63,8 @@ fun MyProfileScreen(navController: NavController, vm: MainViewModel) {
             onSave = { vm.onSave(name,username,bio, imageUrl )},
             onBack = {  navController.navigate(Routes.Services.route) },
             onLogout = {
-
+                vm.logout()
+                navController.navigate(Routes.Login.route)
             }
         )
     }
