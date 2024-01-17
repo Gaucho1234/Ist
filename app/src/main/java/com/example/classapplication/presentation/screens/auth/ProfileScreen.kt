@@ -1,7 +1,6 @@
-package com.example.classapplication.presentation.screens.main
+package com.example.classapplication.presentation.screens.auth
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -28,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,19 +39,22 @@ import com.example.classapplication.presentation.common.ProgressSpinner
 import com.example.classapplication.presentation.common.navigateTo
 
 @Composable
-fun MyProfileScreen(navController: NavController, vm: MainViewModel) {
+fun ProfileScreen(navController: NavController, vm: MainViewModel) {
+    // Check if data is being loaded
     val isLoading = vm.inProgress.value
     if (isLoading) {
         ProgressSpinner()
     } else {
+        // Retrieve user data
         val userData = vm.userData.value
+
+        // Initialize mutable state variables for name, username, and bio
         var name by rememberSaveable { mutableStateOf(userData?.name ?: "") }
         var username by rememberSaveable { mutableStateOf(userData?.username ?: "") }
         var bio by rememberSaveable { mutableStateOf(userData?.bio ?: "") }
-        var imageUrl by rememberSaveable { mutableStateOf(userData?.imageUrl ?: "") }
-//        Log.d("prof", "name: $name, username: $username, bio: $bio")
-        ProfileContent(
-            vm = vm,
+
+        // Render the profile content
+        ProfileContent(vm = vm,
             name = name,
             username = username,
             bio = bio,
@@ -61,14 +62,28 @@ fun MyProfileScreen(navController: NavController, vm: MainViewModel) {
             onUsernameChange = { username = it },
             onBioChange = { bio = it },
             onSave = { vm.updateProfileData(name, username, bio) },
-            onBack = {  navController.navigate(Routes.Services.route) },
+            onBack = { navigateTo(navController = navController, Routes.Services) },
             onLogout = {
                 vm.onLogout()
-                navController.navigate(Routes.Login.route)
-            }
-        )
+                navigateTo(navController, Routes.Login)
+            })
     }
 }
+
+/**
+ * Composable function that represents the profile screen content.
+ *
+ * @param vm The view model for the screen.
+ * @param name The name of the user.
+ * @param username The username of the user.
+ * @param bio The bio of the user.
+ * @param onNameChange Callback function for name changes.
+ * @param onUsernameChange Callback function for username changes.
+ * @param onBioChange Callback function for bio changes.
+ * @param onSave Callback function for saving changes.
+ * @param onBack Callback function for navigating back.
+ * @param onLogout Callback function for logging out.
+ */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +100,7 @@ fun ProfileContent(
     onLogout: () -> Unit
 ) {
     val scrollState = rememberScrollState()
-    val imageUrl = vm.userData?.value?.imageUrl
+    val imageUrl = vm.userData.value?.imageUrl
 
     Column(
         modifier = Modifier
@@ -118,11 +133,8 @@ fun ProfileContent(
             TextField(
                 value = name,
                 onValueChange = onNameChange,
-                colors = TextFieldDefaults.textFieldColors(
 
-                    textColor = Color.Black
                 )
-            )
         }
 
         Row(
@@ -153,6 +165,7 @@ fun ProfileContent(
                 value = bio,
                 onValueChange = onBioChange,
                 colors = TextFieldDefaults.textFieldColors(
+
                     textColor = Color.Black
                 ),
                 singleLine = false,
@@ -171,13 +184,20 @@ fun ProfileContent(
     }
 }
 
+/**
+ * Composable function that displays the profile image and allows the user to change it.
+ *
+ * @param imageUrl The URL of the profile image.
+ * @param vm The MainViewModel instance.
+ */
+
 @Composable
 fun ProfileImage(imageUrl: String?, vm: MainViewModel) {
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) {uri: Uri? ->
-        uri?.let {  }
+        uri?.let { vm.uploadProfileImage(uri) }
     }
 
     Box(modifier = Modifier.height(IntrinsicSize.Min)) {
@@ -204,5 +224,3 @@ fun ProfileImage(imageUrl: String?, vm: MainViewModel) {
             ProgressSpinner()
     }
 }
-
-

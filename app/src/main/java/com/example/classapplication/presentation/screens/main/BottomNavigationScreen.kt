@@ -28,7 +28,7 @@ import com.example.classapplication.presentation.common.navigateTo
 enum class BottomNavigationItem(val icon: ImageVector, val navDestination: Routes) {
     SERVICES(Icons.Default.Build, Routes.Services),
     SEARCH(Icons.Default.Search, Routes.Search),
-    MYSERVICES(Icons.Default.Settings,Routes.MyServices),
+//    MYSERVICES(Icons.Default.Settings,Routes.MyServices),
     PROFILE(Icons.Default.Person,Routes.Profile),
 }
 

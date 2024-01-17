@@ -31,6 +31,8 @@ import com.example.classapplication.presentation.MainViewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
 
 
 @Composable
@@ -119,17 +121,17 @@ fun <T> DropdownField(
 @Composable
 fun CommonImage(
     data: String?,
-    modifier: Modifier = Modifier.wrapContentSize(),
+    modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Crop
 ) {
-    val painter = rememberImagePainter(data = data)
+    val painter = rememberAsyncImagePainter(model = data)
     Image(
         painter = painter,
         contentDescription = null,
         modifier = modifier,
         contentScale = contentScale
     )
-    if (painter.state is ImagePainter.State.Loading) {
+    if (painter.state is AsyncImagePainter.State.Loading) {
         ProgressSpinner()
     }
 }
