@@ -115,6 +115,7 @@ fun SignupScreen(navController: NavController, vm: MainViewModel) {
         }
         val isLoading = vm.inProgress.value
         if (isLoading) {
+            //Progress spinner
             ProgressSpinner()
         }
     }

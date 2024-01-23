@@ -295,12 +295,20 @@ class MainViewModel @Inject constructor(
     //create service
     private fun onCreateService(imageUri: Uri, description: String, onPostSuccess: () -> Unit){
         //fetch userid
+        val uid = auth.currentUser?.uid
         //get the current username
+        val username = userData.value?.username
         //get the current user image
+        val userImage = userData.value?.imageUrl
 
         //check if the current user id is null
-        //Assign the services data model a variable
-        //use the set method to set the data
+        if(uid !== null){
+            //Assign the services data model a variable
+            //use the set method to set the data
+        }else {
+
+        }
+
 
     }
     private fun updateServiceImageData(imageUrl: String) {

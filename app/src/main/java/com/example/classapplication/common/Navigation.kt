@@ -16,6 +16,7 @@ import com.example.classapplication.presentation.screens.main.MyProfileScreen
 import com.example.classapplication.presentation.screens.main.MyServicesScreen
 import com.example.classapplication.presentation.screens.main.SearchScreen
 import com.example.classapplication.presentation.screens.main.ServiceScreen
+import com.example.classapplication.presentation.screens.main.SplashScreen
 
 @Composable
 fun DemandApp() {
@@ -40,6 +41,10 @@ fun DemandApp() {
         }
         composable(Routes.MyServices.route) {
             MyServicesScreen(navController = navController, vm = vm)
+        }
+
+        composable(Routes.SplashScreen.route) {
+            SplashScreen()
         }
 
     }

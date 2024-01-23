@@ -8,5 +8,6 @@ sealed class Routes(val route:String){
     object MyServices:Routes("myservices")
     object Search:Routes("search")
 
+    object SplashScreen:Routes("splashscreen")
 
 }
