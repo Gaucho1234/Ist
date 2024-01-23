@@ -53,19 +53,6 @@ fun BottomNavigationMenu(selectedItem: BottomNavigationItem, navController: NavC
                     },
                 colorFilter = if (item == selectedItem) ColorFilter.tint(Color.Black)
                 else ColorFilter.tint(Color.Gray))
-//            Image(
-//                painter = painterResource(id = item.icon),
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .size(40.dp)
-//                    .padding(5.dp)
-//                    .weight(1f)
-//                    .clickable {
-//                        navigateTo(navController, item.navDestination)
-//                    },
-//                colorFilter = if (item == selectedItem) ColorFilter.tint(Color.Black)
-//                else ColorFilter.tint(Color.Gray)
-//            )
         }
     }
 }
