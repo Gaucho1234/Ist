@@ -312,7 +312,7 @@ class MainViewModel @Inject constructor(
 
     }
     private fun updateServiceImageData(imageUrl: String) {
-
+       val imageUrl  =  imageUrl
 
     }
     private fun convertServices(documents: QuerySnapshot, outState: MutableState<List<ServicesData>>) {
