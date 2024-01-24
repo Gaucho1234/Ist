@@ -1,6 +1,6 @@
 package com.example.classapplication.data
 data class ServicesData(
-    val serviceId: String? = null,
+    val serviceId: Any? = null,
     val userId: String? = null,
     val username: String? = null,
     val userImage: String? = null,
@@ -9,9 +9,12 @@ data class ServicesData(
     val time: Long? = null,
 ) {
     fun toMap() = mapOf(
+        "serviceId" to serviceId,
         "userId" to userId,
         "username" to username,
-        "imageUrl" to userImage,
-        " ServiceDescription" to serviceDescription,
+        "userImage" to userImage,
+        "serviceImage" to serviceImage,
+        "serviceDescription" to serviceDescription,
+        "time" to time
     )
 }

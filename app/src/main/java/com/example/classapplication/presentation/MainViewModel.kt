@@ -5,13 +5,12 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.classapplication.common.SERVICES
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
-import com.example.classapplication.common.SERVICES
 import com.example.classapplication.common.USERS
 import com.example.classapplication.data.Event
 import com.example.classapplication.data.ServicesData
@@ -46,6 +45,7 @@ class MainViewModel @Inject constructor(
     val inProgress = mutableStateOf(false)
     val userData = mutableStateOf<UserData?>(null)
     val popupNotification = mutableStateOf<Event<String>?>(null)
+    val serviceData = mutableStateOf<ServicesData?>(null)
 
     /**
      * Initializes the MainViewModel.
@@ -226,6 +226,32 @@ class MainViewModel @Inject constructor(
 
     }
 
+    fun getServicesData(uid: String){
+        inProgress.value = true
+        db.collection(SERVICES).document(uid).get().addOnSuccessListener {
+            /**
+             * Converts the Firestore document to a UserData object.
+             *
+             * @param it The Firestore document to convert.
+             * @return The converted UserData object.
+             */
+            val service = it.toObject<ServicesData>()
+            serviceData.value = service
+            inProgress.value = false
+            //popupNotification.value = Event("User data retrieved successfully")
+        }
+            /**
+             * Adds a failure listener to the Firebase Firestore query.
+             * This listener handles the exception and updates the inProgress value to false.
+             *
+             * @param exc The exception that occurred.
+             */
+            .addOnFailureListener { exc ->
+                handleException(exc, "cannot get service data")
+                inProgress.value = false
+            }
+    }
+
     /**
      * Handles exceptions and displays a notification message.
      *
@@ -325,6 +351,52 @@ class MainViewModel @Inject constructor(
         outState.value = sortedServices
     }
     //Add roles controller
+    private fun createOrUpdateService(
+         serviceId:Any? = null,
+         username: String? = null,
+         userId: String? = null,
+         userImage: String? = null,
+         serviceImage: String? = null,
+         serviceDescription: String? = null,
+         time: Long? = null,
 
+    ) {
+        val uuid = UUID.randomUUID()
+        val uid = auth.currentUser?.uid
+        val serviceData = ServicesData(
+            serviceId = uuid,
+            userId = uid,
+            username = username ?: serviceData.value?.username,
+            userImage = userImage ?: serviceData.value?.userImage,
+            serviceImage = serviceImage ?: serviceData.value?.serviceImage,
+            serviceDescription = serviceDescription ?: serviceData.value?.serviceDescription,
+            time = serviceData.value?.time,
+        )
+
+        uid?.let { uid ->
+            inProgress.value = true
+            db.collection(SERVICES).document(uid).get().addOnSuccessListener {
+                if (it.exists()) {
+                    it.reference.update(serviceData.toMap()).addOnSuccessListener {
+                        this.serviceData.value = serviceData
+                        inProgress.value = false
+                    }.addOnFailureListener {
+                        handleException(it, "Service update failed")
+                        inProgress.value = false
+                    }
+
+                } else {
+                    db.collection(SERVICES).document(uid).set(serviceData)
+                    getServicesData(uid)
+                    inProgress.value = false
+                }
+
+            }.addOnFailureListener { exc ->
+                handleException(exc, "cannot create service")
+                inProgress.value = false
+            }
+        }
+
+    }
 
 }

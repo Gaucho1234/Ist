@@ -18,7 +18,7 @@ data class UserData(
     var imageUrl: String? = null,
     var bio: String? = null,
     var role:List<Roles>? = null,
-    var services: List<String>? = null
+    var services: List<ServicesData>? = null
 ) {
     /**
      * Converts the UserData object to a map for Firebase.
