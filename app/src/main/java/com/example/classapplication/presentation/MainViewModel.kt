@@ -399,4 +399,8 @@ class MainViewModel @Inject constructor(
 
     }
 
+    fun updateServiceData(serviceimage: String, servicedescription: String) {
+        createOrUpdateService(serviceimage, servicedescription)
+    }
+
 }
