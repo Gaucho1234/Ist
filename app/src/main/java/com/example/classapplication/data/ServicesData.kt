@@ -1,4 +1,7 @@
 package com.example.classapplication.data
+
+import java.time.LocalDateTime
+
 data class ServicesData(
     val serviceId: Any? = null,
     val userId: String? = null,
@@ -6,7 +9,7 @@ data class ServicesData(
     val userImage: String? = null,
     val serviceImage: String? = null,
     val serviceDescription: String? = null,
-    val time: Long? = null,
+    val time: LocalDateTime? = null,
 ) {
     fun toMap() = mapOf(
         "serviceId" to serviceId,

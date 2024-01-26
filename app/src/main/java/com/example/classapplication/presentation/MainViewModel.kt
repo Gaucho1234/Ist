@@ -1,7 +1,9 @@
 package com.example.classapplication.presentation
 
 import android.net.Uri
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,6 +18,7 @@ import com.example.classapplication.data.Event
 import com.example.classapplication.data.ServicesData
 import com.example.classapplication.data.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -316,6 +319,14 @@ class MainViewModel @Inject constructor(
             updateServiceImageData(it.toString())
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun uploadServiceImage(uri: Uri) {
+        uploadImage(uri) {
+            createOrUpdateService(serviceImage = it.toString())
+            updateServiceImageData(it.toString())
+        }
+    }
 //Upload service image
 
     //create service
@@ -351,6 +362,7 @@ class MainViewModel @Inject constructor(
         outState.value = sortedServices
     }
     //Add roles controller
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createOrUpdateService(
          serviceId:Any? = null,
          username: String? = null,
@@ -363,14 +375,16 @@ class MainViewModel @Inject constructor(
     ) {
         val uuid = UUID.randomUUID()
         val uid = auth.currentUser?.uid
+        val username = userData.value?.name
+        val userImage = userData.value?.imageUrl
         val serviceData = ServicesData(
             serviceId = uuid,
             userId = uid,
-            username = username ?: serviceData.value?.username,
-            userImage = userImage ?: serviceData.value?.userImage,
+            username = username,
+            userImage = userImage,
             serviceImage = serviceImage ?: serviceData.value?.serviceImage,
             serviceDescription = serviceDescription ?: serviceData.value?.serviceDescription,
-            time = serviceData.value?.time,
+            time = LocalDateTime.now(),
         )
 
         uid?.let { uid ->
@@ -399,6 +413,7 @@ class MainViewModel @Inject constructor(
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateServiceData(serviceimage: String, servicedescription: String) {
         createOrUpdateService(serviceimage, servicedescription)
     }
